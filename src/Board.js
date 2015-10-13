@@ -133,8 +133,10 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var matrix = this.rows();
       var count = 0;
-      for (var i = 0, j = majorDiagonalColumnIndexAtFirstRow; i < matrix.length && j < matrix.length; i++, j++) {
-        count += matrix[i][j];
+      for (var row = 0, col = majorDiagonalColumnIndexAtFirstRow; row < matrix.length && col < matrix.length; row++, col++) {
+        if(col >= 0) {
+          count += matrix[row][col];
+        }
       } 
       return count > 1;
     },
@@ -142,7 +144,7 @@
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       var size = this.get('n');
-      for (var i = 0; i < size; i++) {
+      for (var i = - size + 1 ; i < size; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true
         }
@@ -160,7 +162,9 @@
       var matrix = this.rows();
       var count = 0;
       for (var row = 0, col = minorDiagonalColumnIndexAtFirstRow; row < matrix.length && col >= 0; row++, col--) {
-        count += matrix[row][col];
+        if (col < matrix.length) {
+          count += matrix[row][col];
+        }
       }
 
       return count > 1; // fixme
@@ -170,7 +174,7 @@
     hasAnyMinorDiagonalConflicts: function() {
 
       var size = this.get('n');
-      for(var col = 0; col < size; col++) {
+      for(var col = 0; col < 2 * size - 1; col++) {
         if(this.hasMinorDiagonalConflictAt(col)) {
           return true;
         }
